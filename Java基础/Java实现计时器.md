@@ -4,7 +4,7 @@
 
 
 ```
-package com.local.test;
+
 
 public class TimeJobTest {
 	final long time = 1000;
