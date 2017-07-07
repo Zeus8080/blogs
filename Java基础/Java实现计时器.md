@@ -1,42 +1,37 @@
-#  Java定时器的三种实现方式
+# Java定时器的三种实现方式
 
 ## 1.普通thread
 
-
 ```
-
-
 public class TimeJobTest {
-	final long time = 1000;
-	
-	public static void main(String[] args) {
-		final long time = 1000;
-		Runnable timethread = new Runnable() {
-			public void run() {
-				while(true){
-					        System.out.println("hello");
-					try {
-						Thread.sleep(time);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-				}
-			}
-		};
-		Thread t = new Thread(timethread);
-		t.start();
-	}
-}
+    final long time = 1000;
 
+    public static void main(String[] args) {
+        final long time = 1000;
+        Runnable timethread = new Runnable() {
+            public void run() {
+                while(true){
+                            System.out.println("hello");
+                    try {
+                        Thread.sleep(time);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        };
+        Thread t = new Thread(timethread);
+        t.start();
+    }
+}
 ```
 
 ## 2.Timer和TimerTask类
 
-
 ```
 import java.util.Timer;  
 import java.util.TimerTask;  
-  
+
 /** 
  *  
  * 于第一种方式相比，优势 1>当启动和去取消任务时可以控制 2>第一次执行任务时可以指定你想要的delay时间 
@@ -62,17 +57,16 @@ public class Task2 {
         // schedules the task to be run in an interval  
         timer.scheduleAtFixedRate(task, delay, intevalPeriod);  
     } // end of main  
-} 
+}
 ```
 
 ## 3.ScheduledExecutorService
-
 
 ```
 import java.util.concurrent.Executors;  
 import java.util.concurrent.ScheduledExecutorService;  
 import java.util.concurrent.TimeUnit;  
-  
+
 /** 
  *  
  *  
@@ -101,9 +95,8 @@ public class Task3 {
         // 第二个参数为首次执行的延时时间，第三个参数为定时执行的间隔时间  
         service.scheduleAtFixedRate(runnable, 10, 1, TimeUnit.SECONDS);  
     }  
-}  
+}
 ```
-
 
 
 
