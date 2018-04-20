@@ -43,6 +43,9 @@ Core1和Core2可能会同时把主存中某个位置的值Load到自己的L1 Cac
 ##### 2.1.4 可重入锁
 https://blog.csdn.net/yanyan19880509/article/details/52345422
 
+###3.线程实现
+#### 3.1 继承Thread类
+
 
 
   
