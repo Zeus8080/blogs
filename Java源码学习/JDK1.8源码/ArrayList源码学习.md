@@ -4,8 +4,8 @@
 首先，我们先来看看arraylist的继承关系，了解下具体实现或者继承了那些类，具体如图：
 ![ArrayList的继承关系](/图片/jdk1.8源码系列/arraylist.png)
 
-##2 分析
-###2.1 ArrayList的属性
+## 2.分析
+### 2.1 ArrayList的属性
 
 	//默认初始化的容量
     private static final int DEFAULT_CAPACITY = 10;
