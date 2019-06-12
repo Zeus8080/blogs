@@ -55,6 +55,21 @@ public ArrayList() {
     //使用这个数组在添加第一个元素的时候会扩容到默认大小10
     this.elementData = DEFAULTCAPACITY_EMPTY_ELEMENTDATA;
 }
+
+/**
+ * 带参数的构造方式
+ */
+public ArrayList(Collection<? extends E> c) {
+    elementData = c.toArray();
+    if ((size = elementData.length) != 0) {
+        // c.toArray might (incorrectly) not return Object[] (see 6260652)
+        if (elementData.getClass() != Object[].class)
+            elementData = Arrays.copyOf(elementData, size, Object[].class);
+    } else {
+        // replace with empty array.
+        this.elementData = EMPTY_ELEMENTDATA;
+    }
+}
 ```
 
 
