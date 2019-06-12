@@ -1,4 +1,4 @@
-# java.util.ArrayList
+# java.util.ArrayList源码分析
 
 ## 1.层次结构
 
@@ -19,13 +19,13 @@
 ```java
 //默认初始化的容量
 private static final int DEFAULT_CAPACITY = 10;
-//空数组对象
+//空数组对象,如果传入的容量为0的时候使用
 private static final Object[] EMPTY_ELEMENTDATA = {};
-//另一个空数组，跟上一个相比可以知道增加了多少
+//空数组,传传入容量时使用，添加第一个元素的时候会重新初始为默认容量大小
 private static final Object[] DEFAULTCAPACITY_EMPTY_ELEMENTDATA = {};
-//数组缓存，arrayList实际存储数据的地方
+//数组缓存，arrayList实际存储数据的地方 transient关键字,让被修饰的成员不被序列化
 transient Object[] elementData;
-//数量
+//集合实际大小
 private int size;
 ```
 ### 2.2 Constuctor
@@ -36,10 +36,13 @@ private int size;
  */
 public ArrayList(int initialCapacity) {
     if (initialCapacity > 0) {
+        //如果传入初始化容量＞0,新建一个数组存储元素
         this.elementData = new Object[initialCapacity];
     } else if (initialCapacity == 0) {
+        //如果传入初始化容量＝0,使用空数组EMPTY_ELEMENTDATA
         this.elementData = EMPTY_ELEMENTDATA;
     } else {
+        //如果传入初始化容量＜0,抛出异常
         throw new IllegalArgumentException("Illegal Capacity: "+initialCapacity);
     }
 }
@@ -48,6 +51,8 @@ public ArrayList(int initialCapacity) {
   * 我们最常用的构造器，注意此时DEFAULTCAPACITY_EMPTY_ELEMENTDATA的值为空，在jdk8中，初始容量默认是0，而不是10
  */
 public ArrayList() {
+    //如果没有传入初始化容量,则使用空数组DEFAULTCAPACITY_EMPTY_ELEMENTDATA
+    //使用这个数组在添加第一个元素的时候会扩容到默认大小10
     this.elementData = DEFAULTCAPACITY_EMPTY_ELEMENTDATA;
 }
 ```
