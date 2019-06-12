@@ -5,6 +5,14 @@
 首先，我们先来看看arraylist的继承关系，了解下具体实现或者继承了那些类，具体如图：
 ![ArrayList的继承关系](/图片/jdk1.8源码系列/arraylist.png)
 
+**List**接口,提供基础的增加,删除,遍历等操作
+
+**RandomAccess**接口,是一个标记接口,实现这个接口使用for循环访问数据,比使用iterator访问数据来的快
+
+**Cloneable**接口,可以被克隆
+
+**Serializable**接口,可以被序列化
+
 ## 2.分析
 ### 2.1 ArrayList的属性
 
@@ -20,7 +28,7 @@ transient Object[] elementData;
 //数量
 private int size;
 ```
-### 2.2 constuctor
+### 2.2 Constuctor
 
 ```java
 /**
