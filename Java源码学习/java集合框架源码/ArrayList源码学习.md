@@ -63,6 +63,7 @@ public ArrayList(Collection<? extends E> c) {
     elementData = c.toArray();
     if ((size = elementData.length) != 0) {
         // c.toArray might (incorrectly) not return Object[] (see 6260652)
+        //返回的类型不一定是Object[]类型,这是一个bug,具体分析见下面
         if (elementData.getClass() != Object[].class)
             elementData = Arrays.copyOf(elementData, size, Object[].class);
     } else {
@@ -72,4 +73,24 @@ public ArrayList(Collection<? extends E> c) {
 }
 ```
 
+##### bug分析
+
+**具体先看下Arrays.asList(x).toArray()的源码** 
+
+```java
+//由于启用的是范型,所以构造的结果也是原来类型的结果
+//例如:Arrays.asList("1","2");T就是String类型
+//所以如果new ArrayList( Arrays.asList("1","2") )方式构造,c.toArray就可能不是Object[]
+public static <T> List<T> asList(T... a) {
+    return new ArrayList<>(a);
+}
+
+//这里的ArrayList 是Arrays里面的内部类
+private final E[] a;
+
+ArrayList(E[] array) {
+    a = Objects.requireNonNull(array);
+}
+具体分析,可以参考: https://www.cnblogs.com/zhizhizhiyuan/p/3662371.html
+```
 
