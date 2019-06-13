@@ -96,3 +96,57 @@ ArrayList(E[] array) {
 
 ### 2.3 Method
 
+- boolean add(E e);
+
+  ```java
+  //add方法
+  public boolean add(E e) {
+      //判断最大位置后面一位有没有空间，有的话+1，没有的话扩容
+      ensureCapacityInternal(size + 1);  // Increments modCount!!
+      //将新元素，放到最大元素后一位
+      elementData[size++] = e;
+      return true;
+  }
+  
+  private void ensureCapacityInternal(int minCapacity) {
+      ensureExplicitCapacity(calculateCapacity(elementData, minCapacity));
+  }
+  //这个方法只是为了判断是不是初始化后第一次调用
+  private static int calculateCapacity(Object[] elementData, int minCapacity) {
+     	//传入实际存储的数组，如果elementData是空的话（也就是我们调用ArrayList（）构造方法后第一次add）
+      if (elementData == DEFAULTCAPACITY_EMPTY_ELEMENTDATA) {
+          //返回默认初始容量（这里如果第一次的话，minCapacity= size+1=1）
+          //也就是说这里才初始化，分配默认容量大小10
+          return Math.max(DEFAULT_CAPACITY, minCapacity);
+      }
+      //不是空的话，返回当前最小的容量minCapacity = size+1
+      return minCapacity;
+  }
+  //判断容量是否超出初始化的容量
+  private void ensureExplicitCapacity(int minCapacity) {
+      modCount++;
+  
+      //如果需要的最小容量比实际存储的最大容量还要大的话，证明容量不够，需要扩容
+      if (minCapacity - elementData.length > 0)
+          grow(minCapacity);
+  }
+  
+  //扩容操作
+  private void grow(int minCapacity) {
+      // 旧容量
+      int oldCapacity = elementData.length;
+      //新容量 = 旧容量+旧容量/2，也就是扩容增加1/2
+      int newCapacity = oldCapacity + (oldCapacity >> 1);
+      //扩容后还比需求的最小容量小，新容量就是需求的最小容量
+      if (newCapacity - minCapacity < 0)
+          newCapacity = minCapacity;
+      //扩容后容量比最大MAX_ARRAY_SIZE还大，那么新容量就是MAX_ARRAY_SIZE
+      //MAX_ARRAY_SIZE =Integer.MAX_VALUE - 8;
+      if (newCapacity - MAX_ARRAY_SIZE > 0)
+          newCapacity = hugeCapacity(minCapacity);
+      // minCapacity is usually close to size, so this is a win:
+      elementData = Arrays.copyOf(elementData, newCapacity);
+  }
+  ```
+
+  
