@@ -91,6 +91,6 @@ private final E[] a;
 ArrayList(E[] array) {
     a = Objects.requireNonNull(array);
 }
-具体分析,可以参考: https://www.cnblogs.com/zhizhizhiyuan/p/3662371.html
+//具体分析,可以参考: https://www.cnblogs.com/zhizhizhiyuan/p/3662371.html
 ```
 
