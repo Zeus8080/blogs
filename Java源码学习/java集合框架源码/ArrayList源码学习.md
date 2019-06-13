@@ -94,3 +94,5 @@ ArrayList(E[] array) {
 //具体分析,可以参考: https://www.cnblogs.com/zhizhizhiyuan/p/3662371.html
 ```
 
+### 2.3 Method
+
