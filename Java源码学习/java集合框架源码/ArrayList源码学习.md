@@ -96,7 +96,8 @@ ArrayList(E[] array) {
 
 ### 2.3 Method
 
-public boolean add(E e);
+- public boolean add(E e);
+
 
 ```java
 //add方法
@@ -149,7 +150,7 @@ private void grow(int minCapacity) {
 }
 ```
 
-public void add(int index, E element)
+- public void add(int index, E element)
 
 ```java
 //在指定位置新增一条数据
@@ -185,7 +186,7 @@ public static native void arraycopy(Object src,  int  srcPos,
                                         int length);
 ```
 
-public boolean addAll(Collection<? extends E> c)
+- public boolean addAll(Collection<? extends E> c)
 
 ```java
 //集合并集操作
@@ -203,7 +204,7 @@ public boolean addAll(Collection<? extends E> c) {
 }
 ```
 
-public E get(int index)
+- public E get(int index)
 
 ```java
 public E get(int index) {
@@ -224,7 +225,7 @@ E elementData(int index) {
 }
 ```
 
-public E remove(int index)
+- public E remove(int index)
 
 ```java
 public E remove(int index) {
@@ -253,7 +254,7 @@ E elementData(int index) {
 }
 ```
 
-public boolean remove(Object o)
+- public boolean remove(Object o)
 
 ```java
 public boolean remove(Object o) {
@@ -291,7 +292,7 @@ private void fastRemove(int index) {
 }
 ```
 
-public boolean retainAll(Collection<?> c)
+- public boolean retainAll(Collection<?> c)
 
 ```java
 //集合求交集
@@ -342,7 +343,7 @@ private boolean batchRemove(Collection<?> c, boolean complement) {
 }
 ```
 
-public boolean removeAll(Collection<?> c)
+- public boolean removeAll(Collection<?> c)
 
 ```java
 //只保留当前集合中不在c中的元素，不保留在c中不在当前集体中的元素。
