@@ -28,7 +28,7 @@ transient Object[] elementData;
 //集合实际大小
 private int size;
 ```
-### 2.2 Constuctor
+### 2.2 Constructor
 
 ```java
 /**
