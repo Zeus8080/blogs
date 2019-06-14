@@ -14,7 +14,18 @@
 **Serializable**接口,可以被序列化
 
 ## 2.分析
-### 2.1 ArrayList的属性
+### 2.1 数据结构
+
+动态数组，内部存储的是一个数组
+
+```java
+//数组缓存，arrayList实际存储数据的地方 transient关键字,让被修饰的成员不被序列化
+transient Object[] elementData;
+```
+
+
+
+### 2.2 ArrayList的属性
 
 ```java
 //默认初始化的容量
@@ -28,7 +39,7 @@ transient Object[] elementData;
 //集合实际大小
 private int size;
 ```
-### 2.2 Constructor
+### 2.3 Constructor
 
 ```java
 /**
@@ -94,7 +105,7 @@ ArrayList(E[] array) {
 //具体分析,可以参考: https://www.cnblogs.com/zhizhizhiyuan/p/3662371.html
 ```
 
-### 2.3 Method
+### 2.4 Method
 
 - public boolean add(E e);
 
