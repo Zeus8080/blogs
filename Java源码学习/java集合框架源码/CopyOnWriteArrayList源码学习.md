@@ -269,3 +269,11 @@ public CopyOnWriteArrayList(E[] toCopyIn) {
       return getArray().length;
   }
   ```
+
+### 3.总结
+
+*对比ArrayList为什么CopyOnWriteArrayList没有size属性？*
+
+因为每次修改都是拷贝一份正好可以存储目标个数元素的数组，所以不需要size属性了，数组的长度就是集合的大小，而不像ArrayList数组的长度实际是要大于集合的大小的。
+
+例如,add(E e)操作，先拷贝一份n+1个元素的数组，再把新元素放到新数组的最后一位，这时新数组的长度为len+1了，也就是集合的size了
