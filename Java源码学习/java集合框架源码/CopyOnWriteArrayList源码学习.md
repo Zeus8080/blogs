@@ -4,6 +4,8 @@
 
 ![LinkedList的继承关系](/图片/jdk1.8源码系列/CopyOnWriteLArrayList.png)
 
+CopyOnWriteArrayList是ArrayList线程安全版本
+
 ## 2.分析
 
 ### 2.1 数据结构
@@ -129,7 +131,7 @@ public CopyOnWriteArrayList(E[] toCopyIn) {
           newElements[index] = element;
           setArray(newElements);
       } finally {
-          //解锁
+          //释放锁
           lock.unlock();
       }
   }
@@ -141,33 +143,129 @@ public CopyOnWriteArrayList(E[] toCopyIn) {
 
   ```java
   public boolean addIfAbsent(E e) {
+      //获取当前数组
       Object[] snapshot = getArray();
+      //检查元素是否存在,若不存在返回false,存在调用addIfAbsent(e, snapshot)方法
       return indexOf(e, snapshot, 0, snapshot.length) >= 0 ? false :
           addIfAbsent(e, snapshot);
   }
+  //找到元素o在数组elements在index到fence范围内存不存在
+  private static int indexOf(Object o, Object[] elements,
+                             int index, int fence) {
+      if (o == null) {
+          for (int i = index; i < fence; i++)
+              if (elements[i] == null)
+                  return i;
+      } else {
+          for (int i = index; i < fence; i++)
+              if (o.equals(elements[i]))
+                  return i;
+      }
+      return -1;
+  }
   
   private boolean addIfAbsent(E e, Object[] snapshot) {
+      //加锁
       final ReentrantLock lock = this.lock;
       lock.lock();
       try {
+          //重新获取一遍旧数组
           Object[] current = getArray();
           int len = current.length;
+          //如果当前获取的current与之前快照版本snapshot不一致,说明数组有修改
           if (snapshot != current) {
-              // Optimize for lost race to another addXXX operation
+              //这里取当前数组和快照版本较小的那个
               int common = Math.min(snapshot.length, len);
+              //这里保证当前数组common范围内是没有修改的,否则返回false,即添加失败
               for (int i = 0; i < common; i++)
                   if (current[i] != snapshot[i] && eq(e, current[i]))
                       return false;
+              //这里保证当前数组common范围内,不包含要添加元素E
               if (indexOf(e, current, common, len) >= 0)
                   return false;
           }
+          //拷贝一分n+1的数组
           Object[] newElements = Arrays.copyOf(current, len + 1);
+          //将元素放到最后一位
           newElements[len] = e;
           setArray(newElements);
           return true;
       } finally {
+          //释放锁
+          lock.unlock();
+      }
+  }
+  //判断o1和o2是否相同
+  private static boolean eq(Object o1, Object o2) {
+      return (o1 == null) ? o2 == null : o1.equals(o2);
+  }
+  ```
+
+- public E get(int index)
+
+  获取指定索引的元素，支持随机访问(实现了RandomAcess接口)
+
+  ```java
+  public E get(int index) {
+      // 获取元素不需要加锁
+      // 直接返回index位置的元素
+      // 这里是没有做越界检查的, 因为数组本身会做越界检查
+      return get(getArray(), index);
+  }
+  
+  private E get(Object[] a, int index) {
+  	return (E) a[index];
+  }
+  ```
+
+- public E remove(int index)
+
+  删除指定索引元素
+
+  ```java
+  public E remove(int index) {
+      //加锁
+      final ReentrantLock lock = this.lock;
+      lock.lock();
+      try {
+          //获取当前数组
+          Object[] elements = getArray();
+          int len = elements.length;
+          E oldValue = get(elements, index);
+          //删除index位置的元素后,需要移动元素的个数
+          int numMoved = len - index - 1;
+          if (numMoved == 0)
+              //等于0,说明不需要移动元素,删除元素在数组末尾
+              // 那么直接拷贝一份n-1的新数组, 最后一位就自动删除了
+              setArray(Arrays.copyOf(elements, len - 1));
+          else {
+              // 如果移除的不是最后一位
+              // 那么新建一个n-1的新数组
+              Object[] newElements = new Object[len - 1];
+              // 将前index的元素拷贝到新数组中
+              System.arraycopy(elements, 0, newElements, 0, index);
+              // 将index后面(不包含)的元素往前挪一位
+              // 这样正好把index位置覆盖掉了, 相当于删除了
+              System.arraycopy(elements, index + 1, newElements, index,
+                               numMoved);
+              setArray(newElements);
+          }
+          return oldValue;
+      } finally {
+          //释放锁
           lock.unlock();
       }
   }
   ```
 
+- public int size()
+
+  数组大小
+
+  ```java
+  public int size() {
+      // 获取元素个数不需要加锁
+      // 直接返回数组的长度
+      return getArray().length;
+  }
+  ```
