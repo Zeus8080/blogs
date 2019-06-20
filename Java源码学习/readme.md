@@ -4,4 +4,5 @@
 
 - [x] ArrayList
 - [x] CopyOnWriteArrayList
-- [ ] LinkedList
+- [ ] LinkedList 未完成
+- [ ] HashMap 未完成

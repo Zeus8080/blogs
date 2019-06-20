@@ -4,7 +4,7 @@
 
 ![LinkedList的继承关系](/图片/jdk1.8源码系列/linkedList.png)
 
-# 2.分析
+## 2.分析
 
 ### 2.1 数据结构
 
