@@ -1,5 +1,5 @@
 # Java虚拟机运行时数据区 #
-![](http://i.imgur.com/eT0vofH.png)
+![](E:\blog\blogs\图片\jvm\jvm_running_data.png)
 ## 程序计数器(Program Counter Register) ##
 指向当前线程正在执行的字节码指令。线程私有的。
 
